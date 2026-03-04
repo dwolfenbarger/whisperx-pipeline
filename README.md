@@ -14,6 +14,9 @@ py -3.12 -m venv whisperx-env
 # 3) Upgrade packaging tools
 python -m pip install --upgrade pip setuptools wheel
 
+# 3b) Ensure build tooling stays compatible with openai-whisper
+python -m pip install "setuptools<81"
+
 # 4) Install PyTorch nightly w/ CUDA 12.8+ (Blackwell / sm_120 path)
 pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
 
@@ -21,7 +24,7 @@ pip install --pre torch torchvision torchaudio --index-url https://download.pyto
 pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
 
 # 5) Install service dependencies
-pip install -r requirements.txt
+pip install -c constraints.txt -r requirements.txt
 
 # 6) Verify CUDA visibility and GPU name
 python -c "import torch; print('torch', torch.__version__); print('cuda', torch.cuda.is_available()); print('gpu', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'none')"
